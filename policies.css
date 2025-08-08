@@ -33,3 +33,35 @@ button[type="submit"] {
 button[type="submit"]:hover {
   background: #f9a825;
 }
+
+/* Modal styles */
+#registerModal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+}
+#registerModal .modal-content {
+  background: #fff;
+  padding: 2.5em;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 3px 14px rgba(0,0,0,0.13);
+}
+#registerModal button {
+  margin: 1em 2em;
+  padding: 0.7em 2.5em;
+  font-size: 1.1em;
+  border-radius: 6px;
+  background: #000000;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+#registerModal button:hover {
+  background: #f9a825;
+  color: #000;
+}
