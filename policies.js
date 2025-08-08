@@ -55,11 +55,15 @@ document.getElementById('yesBtn').onclick = function() {
 document.getElementById('noBtn').onclick = function() {
   document.getElementById('registerModal').style.display = 'none';
   // Get registrants from localStorage
+
+  // ---- CORS-FIX: Use FormData instead of JSON ----
   let registrants = JSON.parse(localStorage.getItem('registrants') || '[]');
+  const fd = new FormData();
+  fd.append("registrants", JSON.stringify(registrants));
   fetch("https://script.google.com/macros/s/AKfycbzhRzgHnATpwgKkkdsQPw2Pn4DRHO0Snh1B4K0NTRo0GXM8_KC0eHt0wNqtQSk9iVMY/exec", {
     method: "POST",
-    body: JSON.stringify({registrants}),
-    headers: {"Content-Type": "application/json"}
+    body: fd
+    // No headers! Don't set Content-Type, browser will set it for FormData.
   }).then(response => {
     if (response.ok) {
       alert("Registration complete!");
