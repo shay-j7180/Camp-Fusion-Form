@@ -4,6 +4,30 @@
   <meta charset="UTF-8">
   <title>Retreat Policies</title>
   <link rel="stylesheet" href="policies.css">
+  <style>
+    /* Basic modal styling for demonstration */
+    #registerModal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    #registerModal .modal-content {
+      background: #fff;
+      padding: 2em;
+      border-radius: 8px;
+      text-align: center;
+      min-width: 300px;
+    }
+    #registerModal button {
+      margin: 1em;
+      padding: 0.5em 2em;
+      font-size: 1em;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -40,38 +64,48 @@
       <p>
         By signing below, I fully acknowledge and understand all of NLCCA's policies and agree to abide by them.
       </p>
-      
-<form>
-  <div>
-    <label>
-      <input type="checkbox" name="agreePolicy" required> I agree to the policies
-    </label>
+      <div>
+        <label>
+          <input type="checkbox" name="agreePolicy" required> I agree to the policies
+        </label>
+      </div>
+      <div>
+        <label for="dateCompleted">Date Completed:</label>
+        <input type="date" id="dateCompleted" name="dateCompleted" required>
+      </div>
+      <div>
+        <label for="signature">Electronic Signature:</label>
+        <input type="text" id="signature" name="signature" required>
+      </div>
+      <div>
+        <button type="submit">Submit</button>
+      </div>
+    </form>
   </div>
-  <div>
-    <label for="dateCompleted">Date Completed:</label>
-    <input type="date" id="dateCompleted" name="dateCompleted" required>
+
+  <!-- Modal for additional registration -->
+  <div id="registerModal">
+    <div class="modal-content">
+      <p>Would you like to register another person?</p>
+      <button id="yesBtn">Yes</button>
+      <button id="noBtn">No</button>
+    </div>
   </div>
-  <div>
-    <label for="signature">Electronic Signature:</label>
-    <input type="text" id="signature" name="signature" required>
-  </div>
-  <div>
-    <button type="submit">Submit</button>
-  </div>
-</form>
-  </div>
+
   <script>
-    // List all fields from index.html that you want to submit
+    // Array of field names you want to collect for each registrant
     const keys = [
       'firstName', 'lastName', 'dob', 'email', 'phone',
-      // New address fields
-      'address', 'city', 'state', 'zip',
-      // Existing fields
-      'hasAllergies', 'allergyDetails',
-      'emergencyContact1Name', 'emergencyContact1Phone', 'emergencyContact1Email', 'emergencyContact1Relationship',
-      'paymentMethod'
+      'address', 'parentName', 'emergencyContactName', 'emergencyContactPhone',
+      'allergies', 'allergyDetails', 'accommodations',
+      'stayingPlace', 'stayingWith', 'bedsNeeded', 'roommates',
+      'vbs', 'vbsDetails', 'otherNotes'
     ];
+
+    // Get the form element
     const form = document.getElementById('policyForm');
+
+    // Add any stored values as hidden fields (so they're included with FormData)
     keys.forEach(key => {
       const val = localStorage.getItem(key);
       if (val !== null) {
@@ -82,8 +116,59 @@
         form.appendChild(input);
       }
     });
-    // Optionally clear localStorage after submit
-    form.addEventListener('submit', () => localStorage.clear());
+
+    // Handle form submission
+    form.addEventListener('submit', function(e) {
+      e.preventDefault(); // Prevent normal form submission!
+
+      // Collect all form data
+      const formData = new FormData(form);
+      let person = {};
+      keys.forEach(key => person[key] = formData.get(key) || "");
+      person.agreePolicy = formData.get("agreePolicy") ? "on" : "";
+      person.signature = formData.get("signature") || "";
+      person.dateCompleted = formData.get("dateCompleted") || "";
+
+      // Add this person to the array of registrants
+      let registrants = JSON.parse(localStorage.getItem('registrants') || '[]');
+      registrants.push(person);
+      localStorage.setItem('registrants', JSON.stringify(registrants));
+
+      // Clear person-specific info from localStorage for next registrant
+      keys.concat(["agreePolicy", "signature", "dateCompleted"]).forEach(k => localStorage.removeItem(k));
+
+      // Show custom modal for Yes/No choice
+      document.getElementById('registerModal').style.display = 'flex';
+    });
+
+    // Attach modal button listeners ONCE (outside the submit handler)
+    document.getElementById('yesBtn').onclick = function() {
+      document.getElementById('registerModal').style.display = 'none';
+      window.location.href = "intake.html";
+    };
+
+    document.getElementById('noBtn').onclick = function() {
+      document.getElementById('registerModal').style.display = 'none';
+      // Get registrants from localStorage
+      let registrants = JSON.parse(localStorage.getItem('registrants') || '[]');
+      fetch("https://script.google.com/macros/s/AKfycbzhRzgHnATpwgKkkdsQPw2Pn4DRHO0Snh1B4K0NTRo0GXM8_KC0eHt0wNqtQSk9iVMY/exec", {
+        method: "POST",
+        body: JSON.stringify({registrants}),
+        headers: {"Content-Type": "application/json"}
+      }).then(response => {
+        if (response.ok) {
+          alert("Registration complete!");
+          localStorage.removeItem('registrants');
+          form.reset();
+          window.location.href = "thankyou.html";
+        } else {
+          alert("There was a problem submitting your registration.");
+        }
+      }).catch((err) => {
+        console.log("Fetch error:", err);
+        alert("There was a network error submitting your registration.");
+      });
+    };
   </script>
 </body>
 </html>
