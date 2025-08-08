@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Retreat Policies</title>
+  <link rel="stylesheet" href="policies.css">
+</head>
+<body>
+  <div class="container">
+    <form 
+      id="policyForm"
+      action="https://script.google.com/macros/s/AKfycbzhRzgHnATpwgKkkdsQPw2Pn4DRHO0Snh1B4K0NTRo0GXM8_KC0eHt0wNqtQSk9iVMY/exec"
+      method="POST"
+    >
+      <h2>Retreat Policies</h2>
+      <p>
+        Please read through our policies and acknowledge them by signing your name and clicking submit
+      </p>
+
+      <h3>Permission to secure treatment</h3>
+      <p>
+        In the event of an emergency, I authorize New Life Christian Camp Association to secure from any licensed hospital, physician, and/or medical personnel any treatment deemed necessary for me or my minor child/ward's immediate care and agree that I will be responsible for payment of any and all medical services rendered. I understand that this authorization includes transporting my child by ambulance if necessary to the nearest medical treatment facility or hospital if I am unable to be reached first.
+      </p>
+
+      <h3>Release of liability and permission to secure treatment</h3>
+      <p>
+        I recognize and acknowledge that there are certain risks of physical injury to participants in the above program(s) and I agree to assume the full risk of any injuries, damages, or loss regardless of severity which I or my minor child/ward may sustain as a result of participating in any and all activities connected with or associated with such program(s). I agree to waive and relinquish all claims I or my minor child/ward may have against New Life Christian Camp Association, its officers, agents, volunteers, and employees as a result of participation in the program. I do hereby fully release and discharge New Life Christian Camp Association, its officers, agents, volunteers, and employees from any and all claims from injury, damage, or loss with the activities of the program(s). I further agree to indemnify and hold harmless and defend New Life Christian Camp Association and its officers, agents, volunteers, and employees from any and all claims resulting from injuries, damages, or losses sustained by me or my minor child/ward arising out of, connected with, or in any way associated with the activities of the program(s).
+      </p>
+
+      <h3>No responsibility disclaimer</h3>
+      <p>
+        I recognize and acknowledge that New Life Christian Camp Association shall not be held liable for any loss, theft, or damage to personal property, including but not limited to items brought onto the premises or in connection with any event or activity. Participants, guests, or attendees assume full responsibility for the security and safety of their belongings. By entering the premises or participating in the event, all individuals agree to release the organization from any and all claims, demands, and causes of action related to such loss, theft, or damage.
+      </p>
+
+      <h3>Photography and Videography Release</h3>
+      <p>
+        I grant permission to New Life Christian Camp Association to take photographs and videos of me and/or my minor child/ward during the retreat for promotional purposes. I understand that these images may be used in various media, including but not limited to brochures, websites, and social media. If I do not wish for my image or that of my child/ward to be used, I will notify the organization in writing prior to the event.
+      </p>
+
+      <p>
+        By signing below, I fully acknowledge and understand all of NLCCA's policies and agree to abide by them.
+      </p>
+      
+<form>
+  <div>
+    <label>
+      <input type="checkbox" name="agreePolicy" required> I agree to the policies
+    </label>
+  </div>
+  <div>
+    <label for="dateCompleted">Date Completed:</label>
+    <input type="date" id="dateCompleted" name="dateCompleted" required>
+  </div>
+  <div>
+    <label for="signature">Electronic Signature:</label>
+    <input type="text" id="signature" name="signature" required>
+  </div>
+  <div>
+    <button type="submit">Submit</button>
+  </div>
+</form>
+  </div>
+  <script>
+    // List all fields from index.html that you want to submit
+    const keys = [
+      'firstName', 'lastName', 'dob', 'email', 'phone',
+      // New address fields
+      'address', 'city', 'state', 'zip',
+      // Existing fields
+      'hasAllergies', 'allergyDetails',
+      'emergencyContact1Name', 'emergencyContact1Phone', 'emergencyContact1Email', 'emergencyContact1Relationship',
+      'paymentMethod'
+    ];
+    const form = document.getElementById('policyForm');
+    keys.forEach(key => {
+      const val = localStorage.getItem(key);
+      if (val !== null) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = val;
+        form.appendChild(input);
+      }
+    });
+    // Optionally clear localStorage after submit
+    form.addEventListener('submit', () => localStorage.clear());
+  </script>
+</body>
+</html>

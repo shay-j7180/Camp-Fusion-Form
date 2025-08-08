@@ -1,0 +1,86 @@
+body {
+  background: #3c3c3c;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+form {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border-radius: 18px;
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.12);
+  padding: 32px 24px;
+  max-width: 400px;
+  margin: 48px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+label {
+  font-weight: 600;
+  color: #000000;
+}
+input[type="text"], input[type="date"] {
+  padding: 10px;
+  border-radius: 7px;
+  border: 1px solid #000000;
+  font-size: 1rem;
+  background: #fff;
+  margin-top: 6px;
+}
+button[type="submit"] {
+  background: #000000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+button[type="submit"]:hover {
+  background: #7b5a2f;
+}
+h1 {
+  text-align: center;
+  color: #fff;
+  margin-bottom: 24px;
+  overflow: hidden;
+  border-right: .15em solid #fff;
+  white-space: nowrap;
+  letter-spacing: 2px;
+  font-size: 2.2rem;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  animation: typing-h1 2s steps(22, end) 1s 1 normal both, blink-caret .75s step-end infinite;
+}
+
+p {
+  text-align: center;
+  color: #fff;
+  margin-top: 16px;
+  overflow: hidden;
+  border-right: .15em solid #fff;
+  white-space: nowrap;
+  letter-spacing: 1px;
+  font-size: 1.2rem;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  animation: typing-p 2.2s steps(35, end) 3.2s 1 normal both, blink-caret .75s step-end infinite;
+}
+
+/* Adjust steps(N, end) to the number of characters in your text for best effect */
+
+@keyframes typing-h1 {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes typing-p {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: #fff; }
+}

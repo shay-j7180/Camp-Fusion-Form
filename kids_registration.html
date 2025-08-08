@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kids Registration Form</title>
+    <link rel="stylesheet" href="ageform.css">
+    <style>
+        .hidden { display: none; }
+        .emergency-contact-section {
+            border: 2px solid #d32f2f;
+            border-radius: 10px;
+            padding: 16px;
+            margin: 18px 0;
+            background: rgba(255,255,255,0.98);
+        }
+        .emergency-contact-section legend {
+            color: #d32f2f;
+            font-weight: 700;
+            padding: 0 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Kids Registration Form</h1>
+    <p>Kids 12 and younger can only stay on the grounds with a parent/guardian.</p>
+    <form id="kidsForm">
+        <label for="firstName">First Name
+            <input type="text" id="firstName" name="firstName" readonly>
+        </label><br>
+        <label for="lastName">Last Name
+            <input type="text" id="lastName" name="lastName" readonly>
+        </label><br>
+        <label for="dob">Date of Birth
+            <input type="date" id="dob" name="dob" readonly>
+        </label><br>
+        <label for="parentName">Parent/Guardian Name
+            <input type="text" id="parentName" name="parentName" required>
+        </label><br>
+        <label for="allergies">Does the child have any allergies?
+            <select id="allergies" name="allergies" required>
+                <option value="">Select</option>
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+            </select>
+        </label><br>
+        <div id="allergyDetailsDiv" class="hidden">
+            <label for="allergyDetails">Please specify
+                <input type="text" id="allergyDetails" name="allergyDetails">
+            </label><br>
+        </div>
+        <label for="stayingwith">Who will the child be staying with on the grounds?
+            <input type="text" id="stayingwith" name="stayingwith" required>
+        </label><br>
+        <label for="vbs">Will the child be attending VBS?
+            <select id="vbs" name="vbs" required>
+                <option value="">Select</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
+        </label><br>
+        <div id="vbsDetailsDiv" class="hidden">
+            <label for="vbsDetails">What grade did the child complete this year?
+                <input type="text" id="vbsDetails" name="vbsDetails">
+            </label><br>
+        </div>
+        <fieldset class="emergency-contact-section">
+            <legend>Emergency Contact</legend>
+            <label for="emergencyContactName">Name
+                <input type="text" id="emergencyContactName" name="emergencyContactName" required>
+            </label><br>
+            <label for="emergencyContactEmail">Email
+                <input type="email" id="emergencyContactEmail" name="emergencyContactEmail" required>
+            </label><br>
+            <label for="emergencyContactPhone">Phone
+                <input type="tel" id="emergencyContactPhone" name="emergencyContactPhone" required>
+            </label>
+        </fieldset>
+        <button type="submit">Next</button>
+    </form>
+    <script>
+        // Pre-fill fields from localStorage
+        document.getElementById('firstName').value = localStorage.getItem('firstName') || '';
+        document.getElementById('lastName').value = localStorage.getItem('lastName') || '';
+        document.getElementById('dob').value = localStorage.getItem('dob') || '';
+
+        // Show/hide allergy details field
+        const allergiesSelect = document.getElementById('allergies');
+        const allergyDetailsDiv = document.getElementById('allergyDetailsDiv');
+        allergiesSelect.addEventListener('change', function () {
+            if (this.value === 'yes') {
+                allergyDetailsDiv.classList.remove('hidden');
+                document.getElementById('allergyDetails').required = true;
+            } else {
+                allergyDetailsDiv.classList.add('hidden');
+                document.getElementById('allergyDetails').required = false;
+            }
+        });
+
+        // Show/hide VBS grade field
+        const vbsSelect = document.getElementById('vbs');
+        const vbsDetailsDiv = document.getElementById('vbsDetailsDiv');
+        vbsSelect.addEventListener('change', function () {
+            if (this.value === 'yes') {
+                vbsDetailsDiv.classList.remove('hidden');
+                document.getElementById('vbsDetails').required = true;
+            } else {
+                vbsDetailsDiv.classList.add('hidden');
+                document.getElementById('vbsDetails').required = false;
+            }
+        });
+
+        // Handle form submission
+        document.getElementById('kidsForm').addEventListener('submit', function(e){
+            e.preventDefault();
+            localStorage.setItem('parentName', this.parentName.value.trim());
+            localStorage.setItem('emergencyContactName', this.emergencyContactName.value.trim());
+            localStorage.setItem('emergencyContactEmail', this.emergencyContactEmail.value.trim());
+            localStorage.setItem('emergencyContactPhone', this.emergencyContactPhone.value.trim());
+            localStorage.setItem('allergies', this.allergies.value);
+            localStorage.setItem('allergyDetails', this.allergyDetails.value.trim());
+            localStorage.setItem('stayingwith', this.stayingwith.value.trim());
+            localStorage.setItem('vbs', this.vbs.value);
+            localStorage.setItem('vbsDetails', this.vbsDetails.value.trim());
+
+            // Redirect to policies form
+            window.location.href = 'policies.html';
+        });
+    </script>
+</body>
+</html>

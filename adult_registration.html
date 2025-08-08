@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Adult Registration Form</title>
+    <link rel="stylesheet" href="ageform.css">
+    <style>
+        .hidden { display: none; }
+        .emergency-contact-section {
+            border: 2px solid #d32f2f;
+            border-radius: 10px;
+            padding: 16px;
+            margin: 18px 0;
+            background: rgba(255,255,255,0.98);
+        }
+        .emergency-contact-section legend {
+            color: #d32f2f;
+            font-weight: 700;
+            padding: 0 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Adult Registration Form</h1>
+    <form id="adultForm">
+        <label for="firstName">First Name
+            <input type="text" id="firstName" name="firstName" readonly>
+        </label><br>
+        <label for="lastName">Last Name
+            <input type="text" id="lastName" name="lastName" readonly>
+        </label><br>
+        <label for="dob">Date of Birth
+            <input type="date" id="dob" name="dob" readonly>
+        </label><br>
+        <label for="email">Email
+            <input type="email" id="email" name="email" required>
+        </label><br>
+        <label for="phone">Phone Number
+            <input type="tel" id="phone" name="phone" required>
+        </label><br>
+        <label for="address">Address
+            <input type="text" id="address" name="address" required>
+        </label><br>
+        <label for="accommodations">Do you need any special accommodations (e.g., no-step entry, wheelchair access, etc.)?
+            <input type="text" id="accommodations" name="accommodations" placeholder="If none, write 'none'" required>
+        </label><br>
+
+        <label for="allergies">Do you have any allergies?
+            <select id="allergies" name="allergies" required>
+                <option value="">Select</option>
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+            </select>
+        </label><br>
+        <div id="allergyDetailsDiv" class="hidden">
+            <label for="allergyDetails">Please specify
+                <input type="text" id="allergyDetails" name="allergyDetails">
+            </label><br>
+        </div>
+        <label for="bedsNeeded">How many beds do you need?
+            <input type="number" id="bedsNeeded" name="bedsNeeded" min="1" required>
+        </label><br>
+        <label for="roommates">Who will be staying in the room with you? (List all names)
+            <input type="text" id="roommates" name="roommates" placeholder="If none, write 'none'" required>
+        </label><br>
+
+        <fieldset class="emergency-contact-section">
+            <legend>Emergency Contact</legend>
+            <label for="emergencyContactName">Name
+                <input type="text" id="emergencyContactName" name="emergencyContactName" required>
+            </label><br>
+            <label for="emergencyContactPhone">Phone
+                <input type="tel" id="emergencyContactPhone" name="emergencyContactPhone" required>
+            </label>
+            <label for="emergencyContactEmail">Email
+                <input type="email" id="emergencyContactEmail" name="emergencyContactEmail" required>
+        </fieldset>
+
+        <button type="submit">Next</button>
+    </form>
+    <script>
+        // Prefill name and DOB from localStorage
+        document.getElementById('firstName').value = localStorage.getItem('firstName') || '';
+        document.getElementById('lastName').value = localStorage.getItem('lastName') || '';
+        document.getElementById('dob').value = localStorage.getItem('dob') || '';
+
+        // Show/hide allergy details
+        const allergiesSelect = document.getElementById('allergies');
+        const allergyDetailsDiv = document.getElementById('allergyDetailsDiv');
+        allergiesSelect.addEventListener('change', function () {
+            if (this.value === 'yes') {
+                allergyDetailsDiv.classList.remove('hidden');
+                document.getElementById('allergyDetails').required = true;
+            } else {
+                allergyDetailsDiv.classList.add('hidden');
+                document.getElementById('allergyDetails').required = false;
+                document.getElementById('allergyDetails').value = '';
+            }
+        });
+
+        // Handle form submission
+        document.getElementById('adultForm').addEventListener('submit', function(e){
+            e.preventDefault();
+            localStorage.setItem('email', this.email.value.trim());
+            localStorage.setItem('phone', this.phone.value.trim());
+            localStorage.setItem('address', this.address.value.trim());
+            localStorage.setItem('accommodations', this.accommodations.value.trim());
+            localStorage.setItem('emergencyContactName', this.emergencyContactName.value.trim());
+            localStorage.setItem('emergencyContactPhone', this.emergencyContactPhone.value.trim());
+            localStorage.setItem('emergencyContactEmail', this.emergencyContactEmail.value.trim());
+            localStorage.setItem('allergies', this.allergies.value);
+            localStorage.setItem('allergyDetails', this.allergyDetails.value.trim());
+            localStorage.setItem('bedsNeeded', this.bedsNeeded.value);
+            localStorage.setItem('roommates', this.roommates.value.trim());
+
+            // Redirect to policies form
+            window.location.href = 'policies.html';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration Form</title>
+    <link rel="stylesheet" href="intake.css">
+</head>
+<script>
+window.onload = function() {
+  const header = document.querySelector("h1");
+  header.classList.add("spin-header");
+  header.addEventListener("animationend", function() {
+    header.classList.remove("spin-header");
+    header.style.transform = "none"; // Prevent catch/stutter
+  });
+};
+</script>
+<body>
+    <h1>Welcome to Camp Fusion Registration</h1>
+    <p>Please register below, individial forms must be filled out for each camper. We cannot wait to spend the week with you!</p>
+    <form id="intakeForm">
+        <label for="firstName">First name:
+            <input type="text" name="firstName" id="firstName" required>
+        </label><br>
+        <label for="lastName">Last name:
+            <input type="text" name="lastName" id="lastName" required>
+        </label><br>
+        <label for="dob">Date of Birth:
+            <input type="date" name="dob" id="dob" required>
+        </label><br>
+        <button type="submit">Next</button>
+    </form>
+    <script>
+        function calculateAge(dobStr){
+            const dob = new Date(dobStr);
+            if (isNaN(dob.getTime())) return 0; // Invalid date fallback
+            const today = new Date();
+            let age = today.getFullYear() - dob.getFullYear();
+            const m = today.getMonth() - dob.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+                age--;
+            }
+            return age;
+        }
+        document.getElementById('intakeForm').addEventListener('submit', function(e){
+            e.preventDefault();
+            const firstName = this.elements['firstName'].value.trim();
+            const lastName = this.elements['lastName'].value.trim();
+            const dob = this.elements['dob'].value;
+
+            if (!firstName || !lastName || !dob) {
+                alert("Please complete all fields.");
+                return;
+            }
+
+            // Save info to localStorage so the next form can access it
+            localStorage.setItem('firstName', firstName);
+            localStorage.setItem('lastName', lastName);
+            localStorage.setItem('dob', dob);
+
+            const age = calculateAge(dob);
+            if (age < 13) {
+                window.location.href = 'kids_registration.html';
+            } else if (age < 18) {
+                window.location.href = 'teen_registration.html';
+            } else {
+                window.location.href = 'adult_registration.html';
+            }
+        });
+    </script>
+</body>
+</html>
