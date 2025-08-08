@@ -49,7 +49,7 @@ form.addEventListener('submit', function(e) {
 // Attach modal button listeners ONCE (outside the submit handler)
 document.getElementById('yesBtn').onclick = function() {
   document.getElementById('registerModal').style.display = 'none';
-  window.location.href = "intake.html";
+  window.location.href = "index.html"; // Redirect to index page
 };
 
 document.getElementById('noBtn').onclick = function() {
